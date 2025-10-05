@@ -104,6 +104,29 @@ pub struct DeltaDataSinkWire {
     schema: SchemaRef,
 }
 
+impl Into<DeltaDataSinkWire> for DeltaDataSink {
+    fn into(self) -> DeltaDataSinkWire {
+        DeltaDataSinkWire {
+            log_store: self.log_store,
+            snapshot: self.snapshot,
+            save_mode: self.save_mode,
+            schema: self.schema,
+        }
+    }
+}
+
+impl Into<DeltaDataSink> for DeltaDataSinkWire {
+    fn into(self) -> DeltaDataSink {
+        DeltaDataSink {
+            log_store: self.log_store,
+            snapshot: self.snapshot,
+            save_mode: self.save_mode,
+            schema: self.schema,
+            metrics: ExecutionPlanMetricsSet::new(),
+        }
+    }
+}
+
 /// A [`DataSink`] implementation for writing to Delta Lake.
 ///
 /// `DeltaDataSink` is used by [`DataSinkExec`] during query execution to
