@@ -91,7 +91,10 @@ mod table_provider;
 
 pub use cdf::scan::DeltaCdfTableProvider;
 pub(crate) use table_provider::DeltaScanBuilder;
-pub use table_provider::{DeltaScan, DeltaScanConfig, DeltaScanConfigBuilder, DeltaTableProvider};
+pub use table_provider::{
+    DeltaDataSink, DeltaDataSinkWire, DeltaScan, DeltaScanConfig, DeltaScanConfigBuilder,
+    DeltaTableProvider,
+};
 
 impl From<DeltaTableError> for DataFusionError {
     fn from(err: DeltaTableError) -> Self {
@@ -821,7 +824,8 @@ impl TableProviderFactory for DeltaTableFactory {
                         }
                     })
                     .collect::<HashMap<String, String>>(),
-            ).await?
+            )
+            .await?
         };
         Ok(Arc::new(provider))
     }
