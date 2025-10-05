@@ -104,24 +104,24 @@ pub struct DeltaDataSinkWire {
     schema: SchemaRef,
 }
 
-impl Into<DeltaDataSinkWire> for DeltaDataSink {
-    fn into(self) -> DeltaDataSinkWire {
+impl From<&DeltaDataSink> for DeltaDataSinkWire {
+    fn from(sink: &DeltaDataSink) -> Self {
         DeltaDataSinkWire {
-            log_store: self.log_store,
-            snapshot: self.snapshot,
-            save_mode: self.save_mode,
-            schema: self.schema,
+            log_store: sink.log_store.clone(),
+            snapshot: sink.snapshot.clone(),
+            save_mode: sink.save_mode,
+            schema: sink.schema.clone(),
         }
     }
 }
 
-impl Into<DeltaDataSink> for DeltaDataSinkWire {
-    fn into(self) -> DeltaDataSink {
+impl From<&DeltaDataSinkWire> for DeltaDataSink {
+    fn from(wire: &DeltaDataSinkWire) -> Self {
         DeltaDataSink {
-            log_store: self.log_store,
-            snapshot: self.snapshot,
-            save_mode: self.save_mode,
-            schema: self.schema,
+            log_store: wire.log_store.clone(),
+            snapshot: wire.snapshot.clone(),
+            save_mode: wire.save_mode,
+            schema: wire.schema.clone(),
             metrics: ExecutionPlanMetricsSet::new(),
         }
     }
